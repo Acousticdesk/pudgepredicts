@@ -35,7 +35,7 @@ const getPostId = (post) => post.id;
 
 const updateLatestCard = (lastPost) => {
   if (lastPost) {
-    document.querySelector('.latest-col .card').innerHTML =
+    document.querySelector('.latest-col').innerHTML =
       latestCardTemplate( getPostId(lastPost), getPostTitle(lastPost) );
   }
 };
@@ -52,7 +52,7 @@ const updateRecentCards = (posts) => {
 };
 
 const getLastPost = (arr) => {
-  return arr && arr.length ? arr[arr.length - 1] : null;
+  return arr && arr.length ? arr[0] : null;
 };
 
 const getRecentPosts = (arr) => {
@@ -63,14 +63,24 @@ const getPost = (id) => {
   return posts.filter((p) => p.id === id)[0];
 };
 
+const showCards  = () => {
+  [...document.querySelectorAll('.card')].forEach((c) => c.style.opacity = 1);
+};
+
 fetch('http://pudgepredicts.gq/wp-json/wp/v2/posts')
   .then((res) => res.json())
   .then((data) => {
     posts = data;
     updateLatestCard( getLastPost(posts) );
-    updateRecentCards(posts);
+    updateRecentCards(getRecentPosts(posts));
     initTooltips();
+    window.setTimeout(showCards, 0);
   });
+
+const initTooltips = () => {
+  const elems = document.querySelectorAll('.tooltipped');
+  const instances = M.Tooltip.init(elems);
+};
 
 document.body.addEventListener('click', ({target}) => {
   if (target.dataset.role !== 'btn') {
@@ -81,7 +91,11 @@ document.body.addEventListener('click', ({target}) => {
   document.querySelector('.container').innerHTML = getPost(id).content.rendered;
 });
 
-const initTooltips = () => {
-  const elems = document.querySelectorAll('.tooltipped');
-  const instances = M.Tooltip.init(elems);
-};
+document.body.addEventListener('click', ({target}) => {
+  if (!target.classList.contains('cold')) {
+    return;
+  }
+  
+  const id = window.parseInt(target.dataset.id);
+  document.querySelector('.container').innerHTML = getPost(id).content.rendered;
+});
