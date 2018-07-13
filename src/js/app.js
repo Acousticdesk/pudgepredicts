@@ -1,33 +1,3 @@
-// let posts = [];
-//
-// const latestCardTemplate = (id, title) => {
-//   return '<div data-id="' + id + '" class="card white bg image-1">\n' +
-//     '                <div class="card-content">\n' +
-//     '                    <span class="card-title white-text">\n' + title +
-//     '                    </span>\n' +
-//     '                    <div class="views white-text">\n' +
-//     '                        <i class="material-icons">remove_red_eye</i>\n' +
-//     '                        322\n' +
-//     '                    </div>\n' +
-//     '                    <a data-role="btn" class="waves-effect waves-red btn-flat red-text text-darken-2">Show me the prediction</a>\n' +
-//     '                </div>\n' +
-//     '            </div>';
-// };
-//
-// const recentCardTemplate = (id, title) => {
-//   return '<div data-id="' + id + '" class="cold">\n' +
-//     '                <div class="card white image-3">\n' +
-//     '                    <div class="card-content">\n' +
-//     '                        <span \n' +
-//     '                                class="card-title white-text tooltipped"\n' +
-//     '                                data-position="top"\n' +
-//     '                                data-tooltip="' + title + '">\n' + title +
-//     '                        </span>\n' +
-//     '                    </div>\n' +
-//     '                </div>\n' +
-//     '            </div>'
-// };
-//
 // const getPostTitle = (post) => post.title.rendered;
 // const getPostId = (post) => post.id;
 //
