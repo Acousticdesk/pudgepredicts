@@ -14,14 +14,10 @@ export default class Home extends Component {
       fetch(config.endpoints.getPosts())
         .then((res) => res.json())
         .then((posts) => {
+          console.log(posts);
           this.setState({
             posts
           });
-          // posts = data;
-          // updateLatestCard( getLastPost(posts) );
-          // updateRecentCards(getRecentPosts(posts));
-          // initTooltips();
-          // window.setTimeout(showCards, 0);
         });
     }
     getLatestPost() {
@@ -33,6 +29,13 @@ export default class Home extends Component {
     arePostsLoaded() {
       return typeof this.state.posts !== 'undefined';
     }
+    static getPostBackgroundImg(data) {
+      const placeholder = 'images/image_2.jpg';
+      const embeddings = data._embedded['wp:featuredmedia'];
+      const url = embeddings ? embeddings[0].source_url : placeholder;
+      
+      return `url(${url})`;
+    }
     render() {
         return (
           <div className="container">
@@ -40,11 +43,17 @@ export default class Home extends Component {
     
             <div className="predictions-list">
               <div className="latest-col">
-                {this.arePostsLoaded() ? <Latest data={this.getLatestPost()}/> : <Loader/>}
+                {this.arePostsLoaded() ?
+                  <Latest
+                    data={this.getLatestPost()}
+                    getBackgroundImage={Home.getPostBackgroundImg}/> :
+                  <Loader/>}
               </div>
               <div className="recents-col">
                 {this.arePostsLoaded() ?
-                  this.getRecentPosts().map((p, i) => <Recent data={this.getLatestPost()} key={i} />) :
+                  this.getRecentPosts().map((p, i) => (
+                    <Recent data={p} key={i} getBackgroundImage={Home.getPostBackgroundImg} />
+                  )) :
                   <Loader/>
                 }
               </div>

@@ -75,21 +75,6 @@
     margin-top: 5.52rem;
 }
 
-.card.image-1 {
-    background: url('../../static/images/image_1.jpg');
-    background-size: cover;
-}
-
-.card.image-2 {
-    background: url('../../static/images/image_2.jpg');
-    background-size: cover;
-}
-
-.card.image-3 {
-    background: url('../../static/images/image_3.jpeg');
-    background-size: cover;
-}
-
 .card [data-role="btn"] {
     position: absolute;
     bottom: 8px;
@@ -122,6 +107,9 @@
 }
 
 .card {
+    animation: fadeIn .3s linear forwards; 
     transition: opacity 300ms 200ms ease-in-out;
     opacity: 0;
+    background-size: cover;
+    background-position: center;
 }
