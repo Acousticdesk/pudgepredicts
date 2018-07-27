@@ -1,0 +1,115 @@
+.brand-logo.brand-logo--left-pad {
+    padding-left: 24px;
+}
+
+.predictions-list {
+    display: flex;
+    justify-content: space-around;
+}
+
+.latest-col {
+    width: 45%;
+    flex-shrink: 0;
+    padding: 8px 0;
+}
+
+.card {
+    position: relative;
+}
+
+.card .card-content {
+    padding: 8px;
+}
+
+.card-content:before {
+    content: ' ';
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 0;
+    left: 0;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,7db9e8+100 */
+    background: rgba(0, 0, 0, 0.4); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.5) 0%, transparent 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5) 0%,transparent 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%,transparent 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='rgba(0, 0, 0, 0.5)', endColorstr='transparent',GradientType=0 ); /* IE6-9 */
+}
+
+.card-title {
+    position: relative;
+    z-index: 2;
+}
+
+.latest-col .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%; 
+    margin: 0;
+}
+
+.latest-col .card-content {
+    flex-grow: 1;
+}
+
+.recents-col {
+    flex-shrink: 0;
+    width: 55%;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 8px;
+}
+
+.recents-col .cold {
+    width: 50%;
+    padding: 8px;
+}
+
+.recents-col .card {
+    margin-top: 0;
+    margin-bottom: 0;
+    min-height: 75px;
+}
+
+.recent-predictions-header {
+    margin-top: 5.52rem;
+}
+
+.card [data-role="btn"] {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+}
+
+.card .card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.views {
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+}
+
+.views .material-icons {
+    vertical-align: middle;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.card {
+    animation: fadeIn .3s linear forwards; 
+    transition: opacity 300ms 200ms ease-in-out;
+    opacity: 0;
+    background-size: cover;
+    background-position: center;
+}

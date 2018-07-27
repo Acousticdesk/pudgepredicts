@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 export default ({data, getBackgroundImage}) => {
     return (
@@ -12,9 +13,12 @@ export default ({data, getBackgroundImage}) => {
                   <i className="material-icons">remove_red_eye</i>
                   {data.views}
               </div>
-              <a data-role="btn" className="waves-effect waves-red btn-flat red-text text-darken-2">
+              <Link
+                to="/post"
+                data-role="btn"
+                className="waves-effect waves-red btn-flat red-text text-darken-2">
                 Show me the prediction
-              </a>
+              </Link>
           </div>
       </div>
     );
