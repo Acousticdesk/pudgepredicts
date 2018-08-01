@@ -15,24 +15,58 @@ export default class App extends Component {
     this.state = {};
   }
   componentDidMount() {
-    fetch(config.endpoints.getPosts())
+    fetch(config.endpoints.getPosts('&tags=2'), {
+      method: 'GET',
+      body: {
+        tags: ['top']
+      }
+    })
       .then((res) => res.json())
-      .then((posts) => {
-        console.dir(posts);
-        this.setState({
-          posts
-        });
+      .then((best) => {
+        this.setState((prevState) => ({
+          posts: {
+            ...prevState.posts,
+            best
+          }
+        }));
+      });
+  
+    fetch(config.endpoints.getPosts(), {
+      method: 'GET',
+      body: {
+        tags: ['top']
+      }
+    })
+      .then((res) => res.json())
+      .then((recents) => {
+        this.setState((prevState) => ({
+          posts: {
+            ...prevState.posts,
+            recents
+          }
+        }));
       });
   }
-  getLatestPost() {
-    return this.state.posts[0];
+  getBestPost() {
+    if (!this.state.posts || !this.state.posts.best) {
+      return null;
+    }
+    return this.state.posts.best[0];
   }
-  getRecentPosts() {
-    return this.state.posts.slice(1);
+  getBestsPosts() {
+    if (!this.state.posts || !this.state.posts.best || !this.state.posts.best) {
+      return null;
+    }
+    return this.state.posts.best.slice(1);
   }
-  arePostsLoaded() {
-    return this.state.posts;
-  }
+  
+  getRecentPosts = () => {
+    if (!this.state.posts) {
+      return null;
+    }
+    return this.state.posts.recents;
+  };
+  
   static getPostBackgroundImg(data) {
     const placeholder = 'images/image_2.jpg';
     const embeddings = data._embedded['wp:featuredmedia'];
@@ -63,33 +97,56 @@ export default class App extends Component {
           <React.Fragment>
             <Header/>
             <div className="container">
-              <Route exact path="/" render={() => (
-                <Home posts={this.state.posts}>
-                  <div className="latest-col">
-                    {this.arePostsLoaded() ?
-                      <Latest
-                        data={this.getLatestPost()}
-                        getBackgroundImage={App.getPostBackgroundImg}
-                        onPostClick={this.onPostClick}
-                      /> :
-                      <Loader/>}
+              <div className="row">
+                <div className="col s9">
+                  <Route exact path="/" render={() => (
+                    <Home getRecentPredictions={this.getRecentPosts}>
+                      <div className="latest-col">
+                        {this.getBestPost() ?
+                          <Latest
+                            data={this.getBestPost()}
+                            getBackgroundImage={App.getPostBackgroundImg}
+                            onPostClick={this.onPostClick}
+                          /> :
+                          <Loader/>}
+                      </div>
+                      <div className="recents-col">
+                        {this.getBestsPosts() ?
+                          this.getBestsPosts().map((p, i) => (
+                            <Recent
+                              data={p}
+                              key={i}
+                              getBackgroundImage={App.getPostBackgroundImg}
+                              onPostClick={this.onPostClick}
+                            />
+                          )) :
+                          <Loader/>
+                        }
+                      </div>
+                    </Home>
+                  )}/>
+                  <Route path="/post" render={() => <Post data={this.getPostById(this.state.selectedPost)}/>}/>
+                </div>
+                <div className="col s3">
+                  <div className="topics">
+                    <h5>Рубрики:</h5>
+                    <ul className="collection">
+                      <li className="collection-item">Рубрика 1</li>
+                      <li className="collection-item">Рубрика 2</li>
+                      <li className="collection-item">Рубрика 3</li>
+                    </ul>
                   </div>
-                  <div className="recents-col">
-                    {this.arePostsLoaded() ?
-                      this.getRecentPosts().map((p, i) => (
-                        <Recent
-                          data={p}
-                          key={i}
-                          getBackgroundImage={App.getPostBackgroundImg}
-                          onPostClick={this.onPostClick}
-                        />
-                      )) :
-                      <Loader/>
-                    }
+                  
+                  <div className="activities">
+                    <h5>Забирай свою шмотку:</h5>
+                    <ul className="collection">
+                      <li className="collection-item">Штаны Макара на Пуджа</li>
+                      <li className="collection-item">Сет Макса, который тот дал потаскать Владу :)</li>
+                      <li className="collection-item">Арканка на Паджика</li>
+                    </ul>
                   </div>
-                </Home>
-              )}/>
-              <Route path="/post" render={() => <Post data={this.getPostById(this.state.selectedPost)}/>}/>
+                </div>
+              </div>
             </div>
           </React.Fragment>
         </Router>
