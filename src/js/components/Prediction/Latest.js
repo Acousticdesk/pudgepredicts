@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-export default ({data, getBackgroundImage, onPostClick}) => {
+export default ({data, getBackgroundImage}) => {
     return (
       <div
         data-id={data.id}
@@ -14,10 +14,10 @@ export default ({data, getBackgroundImage, onPostClick}) => {
                   {data.views}
               </div>
               <Link
-                to="/post"
+                to={`/post/${data.id}`}
                 data-role="btn"
                 className="waves-effect waves-red btn-flat red-text text-darken-2"
-                onClick={() => onPostClick(data.id)}>
+                >
                 Show me the prediction
               </Link>
           </div>

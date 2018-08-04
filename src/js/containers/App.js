@@ -1,5 +1,6 @@
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
-import React, {Component} from 'react';
+import { HashRouter as Router, Route } from 'react-router-dom';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import Header from '../components/Header';
 import Loader from '../components/Loader';
@@ -8,6 +9,8 @@ import Recent from '../components/Prediction/Recent';
 import Home from '../pages/Home';
 import Post from '../pages/Post';
 import config from '../../config';
+
+const HATS_CATEGORY = 1;
 
 export default class App extends Component {
   constructor() {
@@ -31,18 +34,43 @@ export default class App extends Component {
         }));
       });
   
-    fetch(config.endpoints.getPosts(), {
-      method: 'GET',
-      body: {
-        tags: ['top']
-      }
+    this.fetchLatestPosts();
+    
+    fetch(config.endpoints.getCategories())
+      .then((res) => res.json())
+      .then((categories) => {
+        this.setState({
+          categories
+        });
+      });
+    
+    fetch(config.endpoints.getPosts(`&categories=${HATS_CATEGORY}`))
+      .then((res) => res.json())
+      .then((hats) => {
+        this.setState({
+          hats
+        })
+      });
+  
+    fetch(config.endpoints.getPosts(`&categories=${HATS_CATEGORY}`))
+      .then((res) => res.json())
+      .then((hatsPosts) => {
+        this.setState({
+          hatsPosts
+        })
+      })
+  }
+  fetchLatestPosts(categoryId) {
+    fetch(config.endpoints.getPosts(categoryId ? `&categories=${categoryId}` : ''), {
+      method: 'GET'
     })
       .then((res) => res.json())
       .then((recents) => {
+        const filtered = recents.filter((c) => !c.categories.includes(HATS_CATEGORY));
         this.setState((prevState) => ({
           posts: {
             ...prevState.posts,
-            recents
+            recents: filtered
           }
         }));
       });
@@ -75,21 +103,28 @@ export default class App extends Component {
     return `url(${url})`;
   }
   
-  onPostClick = (id) => {
-    this.setState({
-      selectedPost: id
-    });
-  };
-  
-  getPostById(id) {
-    if (!this.state.posts) {
+  getPostById = (id) => {
+    if (!this.state.posts.recents) {
       return null;
     }
     
-    const filtered = this.state.posts.filter((p) => p.id === id);
+    const idInt = window.parseInt(id);
+    const filtered = this.state.posts.recents.filter((p) => p.id === idInt);
     
-    return filtered && filtered[0];
-  }
+    if (filtered && filtered[0]) {
+      return filtered[0];
+    } else {
+      const hatsFiltered = this.state.hatsPosts.filter((p) => {
+        return p.id === idInt;
+      });
+      return hatsFiltered && hatsFiltered[0];
+    }
+  };
+  
+  onChooseCategory = (id) => {
+    this.fetchLatestPosts(id);
+  };
+  
   render() {
     return (
       <React.Fragment>
@@ -106,43 +141,61 @@ export default class App extends Component {
                           <Latest
                             data={this.getBestPost()}
                             getBackgroundImage={App.getPostBackgroundImg}
-                            onPostClick={this.onPostClick}
                           /> :
                           <Loader/>}
                       </div>
                       <div className="recents-col">
                         {this.getBestsPosts() ?
-                          this.getBestsPosts().map((p, i) => (
-                            <Recent
-                              data={p}
-                              key={i}
-                              getBackgroundImage={App.getPostBackgroundImg}
-                              onPostClick={this.onPostClick}
-                            />
-                          )) :
+                          this.getBestsPosts().map((p, i) => {
+                             return <Recent
+                                data={p}
+                                key={i}
+                                getBackgroundImage={App.getPostBackgroundImg}
+                              />
+                          }) :
                           <Loader/>
                         }
                       </div>
                     </Home>
                   )}/>
-                  <Route path="/post" render={() => <Post data={this.getPostById(this.state.selectedPost)}/>}/>
+                  <Route path="/post/:id" render={(props) => <Post {...props} getPostById={this.getPostById} />}/>
                 </div>
                 <div className="col s3">
                   <div className="topics">
                     <h5>Рубрики:</h5>
                     <ul className="collection">
-                      <li className="collection-item">Рубрика 1</li>
-                      <li className="collection-item">Рубрика 2</li>
-                      <li className="collection-item">Рубрика 3</li>
+                      {
+                        this.state.categories
+                          && this.state.categories.map((c) => {
+                            return (
+                              <li
+                                key={c.id}
+                                className="collection-item">
+                                <a href="javascript:void(0)" onClick={() => this.onChooseCategory(c.id)}>{c.name}</a>
+                              </li>
+                            )
+                          })
+                      }
+                      <li
+                        className="collection-item">
+                        <a href="javascript:void(0)" onClick={() => this.onChooseCategory('')}>Все</a>
+                      </li>
                     </ul>
                   </div>
                   
                   <div className="activities">
                     <h5>Забирай свою шмотку:</h5>
                     <ul className="collection">
-                      <li className="collection-item">Штаны Макара на Пуджа</li>
-                      <li className="collection-item">Сет Макса, который тот дал потаскать Владу :)</li>
-                      <li className="collection-item">Арканка на Паджика</li>
+                      {
+                        this.state.hats
+                          ?
+                          this.state.hats.map((h) => {
+                            return <li key={h.id} className="collection-item">
+                              <Link to={`/post/${h.id}`}>{h.title.rendered}</Link>
+                            </li>;
+                          })
+                          : <Loader/>
+                      }
                     </ul>
                   </div>
                 </div>

@@ -8,9 +8,7 @@ export default (props) => {
           <div className="nav-wrapper red darken-4">
             <Link to="/" data-logo href="#" className="brand-logo brand-logo--left-pad">PudgePredicts</Link>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
-              <li><a href="#">My Subscription</a></li>
-              <li><a href="#">Predictions</a></li>
-              <li><a href="#">About</a></li>
+              <li><a target="_blank" href="https://t.me/pudgepredicts">Канал Телеграм</a></li>
             </ul>
           </div>
         </nav>

@@ -1,6 +1,8 @@
 import React from 'react';
 
-export default ({data}) => {
+export default ({getPostById, match}) => {
+    const data = getPostById(match.params.id);
+    console.log(data);
     return (data ?
         <div className="l-post">
             <h2>{data.title.rendered}</h2>

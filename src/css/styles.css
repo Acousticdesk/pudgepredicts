@@ -127,3 +127,15 @@
 .topics {
     margin-top: 2rem;
 }
+
+.post-link {
+    display: block;
+}
+
+.activities {
+    margin-top: 2rem;
+}
+
+.latest-predictions .row {
+    margin-bottom: 0;
+}

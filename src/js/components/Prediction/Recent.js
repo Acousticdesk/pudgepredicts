@@ -9,8 +9,7 @@ export default ({data, getBackgroundImage, onPostClick}) => {
           style={{backgroundImage: getBackgroundImage(data)}}>
           <div className="card-content">
             <Link
-              onClick={() => onPostClick(data.id)}
-              to="/post"
+              to={`/post/${data.id}`}
               className="card-title white-text tooltipped"
               data-position="top"
               data-tooltip={data.title.rendered}>
