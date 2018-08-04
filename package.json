@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "build:prod": "ENVIRONMENT=PRODUCTION webpack",
     "build": "webpack",
     "start": "webpack-dev-server",
     "watch": "webpack --watch"

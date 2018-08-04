@@ -1,8 +1,9 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+console.log(process.env.ENVIRONMENT === 'DEV' ? 'development' : 'production');
 
 module.exports = {
-	mode: 'development',
+	mode: process.env.ENVIRONMENT === 'DEV' ? 'development' : 'production',
 	entry: './src/js/index.js',
 	output: {
 		filename: 'bundle.js',
