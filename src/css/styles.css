@@ -181,3 +181,7 @@
 img {
     max-width: 100%;
 }
+
+ul.sidenav {
+    padding: 0 12px;
+}

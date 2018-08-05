@@ -196,6 +196,25 @@ export default class App extends Component {
             <Header/>
             <ul id="slide-out" className="sidenav">
               <li>
+                <div className="topics">
+                  <h5>Рубрики:</h5>
+                  <ul className="collection">
+                    {
+                      this.state.categories
+                      && this.state.categories.map((c) => {
+                        return (
+                          <li
+                            key={c.id}
+                            className="collection-item sidenav-close">
+                            <Link to={`/category/${c.id}`}>{c.name}</Link>
+                          </li>
+                        )
+                      })
+                    }
+                  </ul>
+                </div>
+              </li>
+              <li>
                 <div className="activities">
                   <h5>Забирай свою шмотку:</h5>
                   <ul className="collection">
@@ -203,7 +222,7 @@ export default class App extends Component {
                       this.state.hats
                         ?
                         this.state.hats.map((h) => {
-                          return <li key={h.id} className="collection-item">
+                          return <li key={h.id} className="collection-item sidenav-close">
                             <Link to={`/post/${h.slug}`}>{this.getPostTitle(h.title.rendered)}</Link>
                           </li>;
                         })
@@ -211,6 +230,10 @@ export default class App extends Component {
                     }
                   </ul>
                 </div>
+              </li>
+              <li>
+                <h5>Присоединяйся:</h5>
+                <a target="_blank" href="https://t.me/pudgepredicts" className="sidenav-close">Канал Телеграм</a>
               </li>
             </ul>
             <div className="container">
