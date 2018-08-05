@@ -17,12 +17,33 @@ export default class App extends Component {
     super();
     this.state = {};
   }
+  static getNoHashUrl() {
+    return window.location.origin + window.location.hash.replace('#', '')
+  }
+  hideDisqus() {
+    const disqusEl = document.querySelector('.disqus');
+    disqusEl && disqusEl.setAttribute('hidden', 'hidden');
+  }
+  initDisqus() {
+    const script = document.createElement('script');
+    const disqusEl = document.querySelector('.disqus');
+    const pageUrl = App.getNoHashUrl();
+  
+    if (!disqusEl) {
+      return;
+    }
+  
+    script.type = 'text/javascript';
+    script.textContent = `var disqus_config=function (){this.page.url='${pageUrl}'; this.page.identifier='${pageUrl}';}; (function(){var d=document, s=d.createElement('script'); s.src='https://pudgepredicts.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s);})();`;
+    disqusEl.appendChild(script);
+  }
   componentDidMount() {
     document.addEventListener('DOMContentLoaded', function() {
       const elems = document.querySelectorAll('.sidenav');
       const instances = M.Sidenav.init(elems);
     });
-  
+    
+    this.initDisqus();
     
     fetch(config.endpoints.getPosts('&tags=2'), {
       method: 'GET',
@@ -149,6 +170,7 @@ export default class App extends Component {
   }
   
   render() {
+    this.hideDisqus();
     return (
       <React.Fragment>
         <Router>
@@ -203,6 +225,9 @@ export default class App extends Component {
                     </Home>
                   )}/>
                   <Route path="/post/:id" render={(props) => <Post {...props} getPostById={this.getPostById} getPostTitle={this.getPostTitle} />}/>
+                  <div hidden className="disqus">
+                    <div id="disqus_thread"></div>
+                  </div>
                 </div>
                 <div className="hide-on-small-only col s3">
                   <div className="topics">
