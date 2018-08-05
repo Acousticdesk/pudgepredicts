@@ -1,12 +1,15 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-
-console.log(process.env.ENVIRONMENT === 'DEV' ? 'development' : 'production');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
 	mode: process.env.ENVIRONMENT === 'DEV' ? 'development' : 'production',
-	entry: './src/js/index.js',
+	entry: {
+    vendor: './src/js/materialize.js',
+	  main: './src/js/index.js'
+  },
 	output: {
-		filename: 'bundle.js',
+		filename: '[name].[contenthash].js',
 		path: __dirname + '/dist'
 	},
 	module: {
@@ -25,15 +28,19 @@ module.exports = {
     }
 	},
 	plugins: [
+	  new CleanWebpackPlugin(['dist']),
 		new CopyWebpackPlugin([
 			{
 				from: 'src/css',
 				to: __dirname + '/dist'
 			},
       {
-        from: 'static',
-        to: __dirname + '/dist'
+        from: 'static/images',
+        to: __dirname + '/dist/images'
       }
-		])
+		]),
+    new HtmlWebpackPlugin({
+      template: 'static/index.html'
+    })
 	]
 };
