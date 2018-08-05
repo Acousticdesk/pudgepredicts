@@ -18,6 +18,12 @@ export default class App extends Component {
     this.state = {};
   }
   componentDidMount() {
+    document.addEventListener('DOMContentLoaded', function() {
+      const elems = document.querySelectorAll('.sidenav');
+      const instances = M.Sidenav.init(elems);
+    });
+  
+    
     fetch(config.endpoints.getPosts('&tags=2'), {
       method: 'GET',
       body: {
@@ -95,12 +101,20 @@ export default class App extends Component {
     return this.state.posts.recents;
   };
   
-  static getPostBackgroundImg(data) {
+  static getPostBackgroundImg(data, getImgEl) {
+    if (!data) {
+      return null;
+    }
+    
     const placeholder = 'images/image_2.jpg';
     const embeddings = data._embedded['wp:featuredmedia'];
-    const url = embeddings ? embeddings[0].source_url : placeholder;
+    const url = embeddings && embeddings[0].source_url;
     
-    return `url(${url})`;
+    if (!getImgEl) {
+      return `url(${url || placeholder})`;
+    }
+    
+    return <img src={url}/>
   }
   
   getPostById = (id) => {
@@ -140,9 +154,28 @@ export default class App extends Component {
         <Router>
           <React.Fragment>
             <Header/>
+            <ul id="slide-out" className="sidenav">
+              <li>
+                <div className="activities">
+                  <h5>Забирай свою шмотку:</h5>
+                  <ul className="collection">
+                    {
+                      this.state.hats
+                        ?
+                        this.state.hats.map((h) => {
+                          return <li key={h.id} className="collection-item">
+                            <Link to={`/post/${h.id}`}>{this.getPostTitle(h.title.rendered)}</Link>
+                          </li>;
+                        })
+                        : <Loader/>
+                    }
+                  </ul>
+                </div>
+              </li>
+            </ul>
             <div className="container">
               <div className="row">
-                <div className="col s9">
+                <div className="col m9 s12">
                   <Route exact path="/" render={() => (
                     <Home getRecentPredictions={this.getRecentPosts} getPostTitle={this.getPostTitle} getPostKeff={this.getPostKeff}>
                       <div className="latest-col">
@@ -171,7 +204,7 @@ export default class App extends Component {
                   )}/>
                   <Route path="/post/:id" render={(props) => <Post {...props} getPostById={this.getPostById} getPostTitle={this.getPostTitle} />}/>
                 </div>
-                <div className="col s3">
+                <div className="hide-on-small-only col s3">
                   <div className="topics">
                     <h5>Рубрики:</h5>
                     <ul className="collection">

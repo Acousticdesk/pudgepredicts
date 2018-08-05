@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+
 import Loader from '../components/Loader';
+import App from '../containers/App';
 
 export default class extends Component {
     componentDidMount() {
@@ -16,9 +18,11 @@ export default class extends Component {
     }
     render() {
       const data = this.props.getPostById(this.props.match.params.id);
+      const postImg = App.getPostBackgroundImg(data, true);
       return (data ?
           <div className="l-post">
             <h2>{this.props.getPostTitle(data.title.rendered)}</h2>
+            {postImg}
             <div dangerouslySetInnerHTML={{ __html: data.content.rendered }}/>
             <div className="disqus">
               <div id="disqus_thread"></div>

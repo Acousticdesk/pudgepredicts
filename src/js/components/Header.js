@@ -10,6 +10,9 @@ export default (props) => {
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               <li><a target="_blank" href="https://t.me/pudgepredicts">Канал Телеграм</a></li>
             </ul>
+            <a href="#" data-target="slide-out" className="sidenav-trigger hide-on-large-only">
+              <i className="material-icons">menu</i>
+            </a>
           </div>
         </nav>
       </header>

@@ -3,15 +3,26 @@
 }
 
 .predictions-list {
-    display: flex;
-    justify-content: space-around;
+
 }
 
+    @media screen and (min-width: 768px) {
+        .predictions-list {
+            display: flex;
+            justify-content: space-around;
+        }
+    }
+
 .latest-col {
-    width: 45%;
-    flex-shrink: 0;
     padding: 8px 0;
 }
+
+    @media screen and (min-width: 768px) {
+        .latest-col {
+            width: 45%;
+            flex-shrink: 0;
+        }
+    }
 
 .card {
     position: relative;
@@ -54,17 +65,27 @@
 }
 
 .recents-col {
-    flex-shrink: 0;
-    width: 55%;
-    display: flex;
-    flex-wrap: wrap;
     padding: 0 8px;
 }
 
+    @media screen and (min-width: 768px) {
+        .recents-col {
+            flex-shrink: 0;
+            width: 55%;
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+
 .recents-col .cold {
-    width: 50%;
     padding: 8px;
 }
+
+    @media screen and (min-width: 768px) {
+        .recents-col .cold {
+            width: 50%;
+        }
+    }
 
 .recents-col .card {
     margin-top: 0;
