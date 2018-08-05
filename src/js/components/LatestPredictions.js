@@ -12,7 +12,7 @@ export default ({getRecentPredictions, getPostTitle, getPostKeff}) => {
                 {
                   getRecentPredictions().map((p, index) => (
                     <li key={index} className="collection-item">
-                      <Link to={`/post/${p.id}`} className="row post-link">
+                      <Link to={`/post/${p.slug}`} className="row post-link">
                         <div className="col m11 s9">
                           {getPostTitle(p.title.rendered)}
                         </div>

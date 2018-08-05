@@ -72,6 +72,7 @@ export default class App extends Component {
     })
       .then((res) => res.json())
       .then((recents) => {
+        console.log(recents);
         const filtered = recents.filter((c) => !c.categories.includes(HATS_CATEGORY));
         this.setState((prevState) => ({
           posts: {
@@ -117,19 +118,18 @@ export default class App extends Component {
     return <img src={url}/>
   }
   
-  getPostById = (id) => {
+  getPostById = (slug) => {
     if (!this.state.posts || !this.state.posts.best || !this.state.posts.recents) {
       return null;
     }
     
-    const idInt = window.parseInt(id);
-    const filtered = this.state.posts.recents.filter((p) => p.id === idInt);
+    const filtered = this.state.posts.recents.filter((p) => p.slug === slug);
     
     if (filtered && filtered[0]) {
       return filtered[0];
     } else if (this.state.hatsPosts) {
       const hatsFiltered = this.state.hatsPosts.filter((p) => {
-        return p.id === idInt;
+        return p.slug === slug;
       });
       return hatsFiltered && hatsFiltered[0];
     }
@@ -164,7 +164,7 @@ export default class App extends Component {
                         ?
                         this.state.hats.map((h) => {
                           return <li key={h.id} className="collection-item">
-                            <Link to={`/post/${h.id}`}>{this.getPostTitle(h.title.rendered)}</Link>
+                            <Link to={`/post/${h.slug}`}>{this.getPostTitle(h.title.rendered)}</Link>
                           </li>;
                         })
                         : <Loader/>
@@ -235,7 +235,7 @@ export default class App extends Component {
                           ?
                           this.state.hats.map((h) => {
                             return <li key={h.id} className="collection-item">
-                              <Link to={`/post/${h.id}`}>{this.getPostTitle(h.title.rendered)}</Link>
+                              <Link to={`/post/${h.slug}`}>{this.getPostTitle(h.title.rendered)}</Link>
                             </li>;
                           })
                           : <Loader/>

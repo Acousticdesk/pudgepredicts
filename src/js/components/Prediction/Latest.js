@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 export default ({data, getBackgroundImage, getPostTitle}) => {
     return (
       <div
-        data-id={data.id}
         className="card white bg image-1"
         style={{backgroundImage: getBackgroundImage(data)}}>
           <div className="card-content">
@@ -14,7 +13,7 @@ export default ({data, getBackgroundImage, getPostTitle}) => {
                   {data.views}
               </div>
               <Link
-                to={`/post/${data.id}`}
+                to={`/post/${data.slug}`}
                 data-role="btn"
                 className="waves-effect waves-red btn-flat red-text text-darken-2"
                 >

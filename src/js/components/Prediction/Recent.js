@@ -3,13 +3,13 @@ import {Link} from 'react-router-dom';
 
 export default ({data, getBackgroundImage, onPostClick, getPostTitle}) => {
     return (
-      <div data-id={data.id} className="cold">
+      <div className="cold">
         <div
           className="card white image-3"
           style={{backgroundImage: getBackgroundImage(data)}}>
           <div className="card-content">
             <Link
-              to={`/post/${data.id}`}
+              to={`/post/${data.slug}`}
               className="card-title white-text tooltipped"
               data-position="top"
               data-tooltip={getPostTitle(data.title.rendered)}>
