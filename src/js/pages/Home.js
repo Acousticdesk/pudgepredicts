@@ -2,7 +2,7 @@ import React from 'react';
 
 import LatestPredictions from '../components/LatestPredictions';
 
-export default ({children, getRecentPredictions}) => {
+export default ({children, getRecentPredictions, getPostTitle, getPostKeff}) => {
   return (
     <React.Fragment>
       <h4 className="recent-predictions-header">Лучшие прогнозы:</h4>
@@ -13,7 +13,7 @@ export default ({children, getRecentPredictions}) => {
       
       <h4 className="latest-predictions-header">Прогнозы на ближайшие матчи:</h4>
       
-      <LatestPredictions getRecentPredictions={getRecentPredictions}/>
+      <LatestPredictions getRecentPredictions={getRecentPredictions} getPostTitle={getPostTitle} getPostKeff={getPostKeff}/>
     </React.Fragment>
   );
 }

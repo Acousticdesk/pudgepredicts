@@ -125,6 +125,15 @@ export default class App extends Component {
     this.fetchLatestPosts(id);
   };
   
+  getPostTitle(title) {
+    return title.replace(/keff:\d+(:?\.\d+)?/, '');
+  }
+  
+  getPostKeff(title) {
+    const matches = title.match(/keff:(\d+(?:\.\d+)?)/);
+    return matches ? matches[1] : '-';
+  }
+  
   render() {
     return (
       <React.Fragment>
@@ -135,12 +144,13 @@ export default class App extends Component {
               <div className="row">
                 <div className="col s9">
                   <Route exact path="/" render={() => (
-                    <Home getRecentPredictions={this.getRecentPosts}>
+                    <Home getRecentPredictions={this.getRecentPosts} getPostTitle={this.getPostTitle} getPostKeff={this.getPostKeff}>
                       <div className="latest-col">
                         {this.getBestPost() ?
                           <Latest
                             data={this.getBestPost()}
                             getBackgroundImage={App.getPostBackgroundImg}
+                            getPostTitle={this.getPostTitle}
                           /> :
                           <Loader/>}
                       </div>
@@ -151,6 +161,7 @@ export default class App extends Component {
                                 data={p}
                                 key={i}
                                 getBackgroundImage={App.getPostBackgroundImg}
+                                getPostTitle={this.getPostTitle}
                               />
                           }) :
                           <Loader/>
@@ -158,7 +169,7 @@ export default class App extends Component {
                       </div>
                     </Home>
                   )}/>
-                  <Route path="/post/:id" render={(props) => <Post {...props} getPostById={this.getPostById} />}/>
+                  <Route path="/post/:id" render={(props) => <Post {...props} getPostById={this.getPostById} getPostTitle={this.getPostTitle} />}/>
                 </div>
                 <div className="col s3">
                   <div className="topics">
@@ -191,7 +202,7 @@ export default class App extends Component {
                           ?
                           this.state.hats.map((h) => {
                             return <li key={h.id} className="collection-item">
-                              <Link to={`/post/${h.id}`}>{h.title.rendered}</Link>
+                              <Link to={`/post/${h.id}`}>{this.getPostTitle(h.title.rendered)}</Link>
                             </li>;
                           })
                           : <Loader/>

@@ -18,7 +18,7 @@ export default class extends Component {
       const data = this.props.getPostById(this.props.match.params.id);
       return (data ?
           <div className="l-post">
-            <h2>{data.title.rendered}</h2>
+            <h2>{this.props.getPostTitle(data.title.rendered)}</h2>
             <div dangerouslySetInnerHTML={{ __html: data.content.rendered }}/>
             <div className="disqus">
               <div id="disqus_thread"></div>

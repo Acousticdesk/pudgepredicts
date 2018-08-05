@@ -1,14 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-export default ({data, getBackgroundImage}) => {
+export default ({data, getBackgroundImage, getPostTitle}) => {
     return (
       <div
         data-id={data.id}
         className="card white bg image-1"
         style={{backgroundImage: getBackgroundImage(data)}}>
           <div className="card-content">
-              <span className="card-title white-text">{data.title.rendered}</span>
+              <span className="card-title white-text">{getPostTitle(data.title.rendered)}</span>
               <div className="views white-text">
                   <i className="material-icons">remove_red_eye</i>
                   {data.views}

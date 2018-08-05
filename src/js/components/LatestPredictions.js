@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Loader from '../components/Loader';
 
-export default ({getRecentPredictions}) => {
+export default ({getRecentPredictions, getPostTitle, getPostKeff}) => {
     return (
         getRecentPredictions() ?
           getRecentPredictions().length ?
@@ -14,9 +14,9 @@ export default ({getRecentPredictions}) => {
                     <li key={index} className="collection-item">
                       <Link to={`/post/${p.id}`} className="row post-link">
                         <div className="col s11">
-                          {p.title.rendered}
+                          {getPostTitle(p.title.rendered)}
                         </div>
-                        <div className="col s1 right-align">100.92</div>
+                        <div className="col s1 right-align">{getPostKeff(p.title.rendered)}</div>
                       </Link>
                     </li>
                   ))
