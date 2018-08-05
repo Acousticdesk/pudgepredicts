@@ -104,7 +104,7 @@ export default class App extends Component {
   }
   
   getPostById = (id) => {
-    if (!this.state.posts.recents) {
+    if (!this.state.posts || !this.state.posts.best || !this.state.posts.recents) {
       return null;
     }
     
@@ -113,7 +113,7 @@ export default class App extends Component {
     
     if (filtered && filtered[0]) {
       return filtered[0];
-    } else {
+    } else if (this.state.hatsPosts) {
       const hatsFiltered = this.state.hatsPosts.filter((p) => {
         return p.id === idInt;
       });
