@@ -27,16 +27,15 @@ export default class extends Component {
     }
     componentDidMount() {
       this.disqusReset();
-      this.unlisten = this.props.history.listen((location) => {
+      window.onpopstate = () => {
         const isNavigationToNextPost = /\/post\/.+/;
-        console.log(location);
-        if (!isNavigationToNextPost.test(location)) {
+        if (!isNavigationToNextPost.test(window.location.hash)) {
           this.disqusHide();
         }
-      });
+      }
     }
     componentWillUnmount() {
-      this.unlisten && this.unlisten();
+      window.onpopstate = () => {};
     }
     render() {
       const data = this.props.getPostById(this.props.match.params.id);

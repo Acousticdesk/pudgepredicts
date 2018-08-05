@@ -2,13 +2,14 @@ import { HashRouter as Router, Route } from 'react-router-dom';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import config from '../../config';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import Latest from '../components/Prediction/Latest';
 import Recent from '../components/Prediction/Recent';
 import Home from '../pages/Home';
 import Post from '../pages/Post';
-import config from '../../config';
+import Category from '../pages/Category';
 
 const HATS_CATEGORY = 1;
 
@@ -66,6 +67,7 @@ export default class App extends Component {
     fetch(config.endpoints.getCategories())
       .then((res) => res.json())
       .then((categories) => {
+        console.log(categories);
         this.setState({
           categories
         });
@@ -156,10 +158,6 @@ export default class App extends Component {
     }
   };
   
-  onChooseCategory = (id) => {
-    this.fetchLatestPosts(id);
-  };
-  
   getPostTitle(title) {
     return title.replace(/keff:\d+(:?\.\d+)?/, '');
   }
@@ -168,6 +166,26 @@ export default class App extends Component {
     const matches = title.match(/keff:(\d+(?:\.\d+)?)/);
     return matches ? matches[1] : '-';
   }
+  
+  getSelectedCategory = (id) => {
+    if (!this.state.categories) {
+      return null;
+    }
+    
+    const idInt = window.parseInt(id);
+    const filtered = this.state.categories.filter((c) => c.id === idInt);
+    return filtered && filtered[0];
+  };
+  
+  getPostsWithCategory = (categoryId) => {
+    if (!this.state.posts || !this.state.posts.recents) {
+      return [];
+    }
+    
+    const categoryIdInt = window.parseInt(categoryId);
+    
+    return this.state.posts.recents.filter((p) => p.categories.includes(categoryIdInt));
+  };
   
   render() {
     this.hideDisqus();
@@ -225,6 +243,7 @@ export default class App extends Component {
                     </Home>
                   )}/>
                   <Route path="/post/:id" render={(props) => <Post {...props} getPostById={this.getPostById} getPostTitle={this.getPostTitle} />}/>
+                  <Route path="/category/:id" render={(props) => <Category {...props} getCategory={this.getSelectedCategory} getPostsWithCategory={this.getPostsWithCategory} getPostTitle={this.getPostTitle}/>}/>
                   <div hidden className="disqus">
                     <div id="disqus_thread"></div>
                   </div>
@@ -240,15 +259,11 @@ export default class App extends Component {
                               <li
                                 key={c.id}
                                 className="collection-item">
-                                <a href="javascript:void(0)" onClick={() => this.onChooseCategory(c.id)}>{c.name}</a>
+                                <Link to={`/category/${c.id}`}>{c.name}</Link>
                               </li>
                             )
                           })
                       }
-                      <li
-                        className="collection-item">
-                        <a href="javascript:void(0)" onClick={() => this.onChooseCategory('')}>Все</a>
-                      </li>
                     </ul>
                   </div>
                   
